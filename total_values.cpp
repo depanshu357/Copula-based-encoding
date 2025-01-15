@@ -5,8 +5,8 @@
 using namespace std;
 
 int main() {
-    // string filename = "Pf25.binLE.raw_corrected_2_subsampled";
-    string filename = "Velocityf25.binLE.raw_corrected_2_subsampled";
+    string filename = "Pf25.binLE.raw_corrected_2_subsampled";
+    // string filename = "Velocityf25.binLE.raw_corrected_2_subsampled";
     // cout << "Enter the filename: ";
     // cin >> filename;
 
@@ -17,6 +17,7 @@ int main() {
     while(!feof(file)) {
         float value;
         fread(&value, sizeof(float), 1, file);
+        if(value > 5000 || value < -5000) cout<<value<<" ";
         count++;
     }
 
