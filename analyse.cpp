@@ -142,6 +142,6 @@ void analyse(vector<string> filepaths, int b_dim, int z_dim, int x_dim, int y_di
 
 int main()
 {
-    analyse({"Velocityf25.binLE.raw_corrected_2_subsampled", "Pf25.binLE.raw_corrected_2_subsampled"}, 25, 50, 250, 250);
+    analyse({"Velocityf25.binLE.raw_corrected_2_subsampled", "Pf25.binLE.raw_corrected_2_subsampled"}, 5, 50, 250, 250);
     return 0;
 }
