@@ -46,8 +46,8 @@ float calculate_covariance(float block1[b_dim][b_dim][b_dim], float block2[b_dim
     for(int i=0;i<b_dim;i++){
         for(int j=0;j<b_dim;j++){
             for(int k=0;k<b_dim;k++){
-                mean1 += block1[i][j][k]/ pow(b_dim, 3);
-                mean2 += block2[i][j][k] / pow(b_dim, 3);
+                mean1 += block1[i][j][k]/ (b_dim * b_dim * b_dim);
+                mean2 += block2[i][j][k] / (b_dim * b_dim * b_dim);
             }
         }
     }
@@ -77,7 +77,7 @@ float calculate_covariance(float block1[b_dim][b_dim][b_dim], float block2[b_dim
 }
 
 void analyse(vector<string> filepaths){
-    int blocks = (z_dim * x_dim * y_dim) / pow(b_dim, 3);
+    int blocks = (z_dim * x_dim * y_dim) / (b_dim * b_dim * b_dim);
     vector<FILE*> files;
     for(auto file: filepaths){
         FILE *f = fopen(file.c_str(), "rb");
