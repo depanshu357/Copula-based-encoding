@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
+
 using namespace std;
+namespace fs = std::filesystem;
 
 const int b_dim = 5, z_dim = 50, x_dim = 250, y_dim = 250, h_dim = 10;
 
@@ -149,7 +151,7 @@ void analyse(vector<string> filepaths){
                     for(int x=0;x<b_dim;x++){
                         int bin = int(((block[t][z][y][x] - mini) / (maxi - mini) ) * h_dim);
                         if(bin == h_dim) bin = h_dim - 1;
-                        
+                        if(bin<0 || bin>=h_dim) {cout<<bin<<" "<<mini<<" "<<maxi;}
                         histogram[bin]++;
                     }
                 }
@@ -172,6 +174,17 @@ void analyse(vector<string> filepaths){
 
 int main()
 {
+
+    // read all files present in the folder Isabel_data_all_variables_raw and store list of strings of filepaths in a vector
+    string folder_path = "Isabel_data_all variables_raw";
+    vector<string> filepaths;
+    for (const auto & entry : fs::directory_iterator(folder_path)) {
+        if (entry.is_regular_file()) {
+            filepaths.push_back(entry.path().string());
+            // cout<<entry.path().string()<<endl;
+        }
+    }
     analyse({"Velocityf25.binLE.raw_corrected_2_subsampled", "Pf25.binLE.raw_corrected_2_subsampled"});
+    // analyse(filepaths);
     return 0;
 }
