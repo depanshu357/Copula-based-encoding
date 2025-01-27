@@ -37,10 +37,10 @@ int main() {
             filepaths.push_back(entry.path().string());
         }
     }
-    // for(int i=0;i<filepaths.size();i++){
-    //     total_values(filepaths[i]);
-    // }
-    total_values("reconstructed_data/0.raw_corrected");
-    total_values("reconstructed_data/1.raw_corrected");
+    for(int i=0;i<filepaths.size();i++){
+        total_values(filepaths[i]);
+    }
+    // total_values("reconstructed_data/0.raw_corrected");
+    // total_values("reconstructed_data/1.raw_corrected");
     return 0;
 }

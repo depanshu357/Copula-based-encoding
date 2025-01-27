@@ -91,6 +91,7 @@ void analyse(vector<string> filepaths){
     }
     vector<float***> file_data_pointers(filepaths.size());
     for(int t=0;t<filepaths.size();t++){
+        cout<<filepaths[t]<<endl;
         float ***data = new float**[z_dim];
         FILE *file = files[t];
         float mini = INT_MAX, maxi = INT_MIN;
@@ -103,7 +104,8 @@ void analyse(vector<string> filepaths){
                     fread(&val, sizeof(float), 1, file);
                     data[z][y][x] = val;
                     if(val > 5000 || val < -5000){
-                        cout<<val<<" ";
+                        cout<<val<<" "; 
+                        cerr<<"Error in file "<<filepaths[t]<<endl;
                     }
                 }
             }
@@ -140,22 +142,28 @@ void analyse(vector<string> filepaths){
                         mini = min(mini, file_data_pointers[t][z][y][x]);
                         maxi = max(maxi, file_data_pointers[t][z][y][x]);
                         block[t][z%b_dim][y%b_dim][x%b_dim] = file_data_pointers[t][z][y][x];
-
+                        
                     }
                 }
             }
             file_histogram_min_max[t][i] = {mini, maxi};
             vector<int> histogram(h_dim, 0);
-            for(int z=0;z<b_dim;z++){
-                for(int y=0;y<b_dim;y++){
-                    for(int x=0;x<b_dim;x++){
-                        int bin = int(((block[t][z][y][x] - mini) / (maxi - mini) ) * h_dim);
-                        if(bin == h_dim) bin = h_dim - 1;
-                        if(bin<0 || bin>=h_dim) {cout<<bin<<" "<<mini<<" "<<maxi;}
-                        histogram[bin]++;
+            if(mini!=maxi){
+                for(int z=0;z<b_dim;z++){
+                    for(int y=0;y<b_dim;y++){
+                        for(int x=0;x<b_dim;x++){
+                            int bin = int(((block[t][z][y][x] - mini) / (maxi - mini) ) * h_dim);
+                            if(bin == h_dim) bin = h_dim - 1;
+                            if(block[t][z][y][x] > 5000 || block[t][z][y][x] < -5000){
+                                cout<<file_data_pointers[t][z][y][x]<<" ";
+                                cerr<<"Error in file "<<filepaths[t]<<endl;
+                            }
+                            if(bin<0 || bin>=h_dim) {cout<<bin<<" "<<mini<<" "<<maxi<<endl;}
+                            histogram[bin]++;
+                        }
                     }
                 }
-            }
+            } 
             file_histogram[t][i] = histogram;
             
         }
@@ -184,7 +192,7 @@ int main()
             // cout<<entry.path().string()<<endl;
         }
     }
-    analyse({"Velocityf25.binLE.raw_corrected_2_subsampled", "Pf25.binLE.raw_corrected_2_subsampled"});
-    // analyse(filepaths);
+    // analyse({"Velocityf25.binLE.raw_corrected_2_subsampled", "Pf25.binLE.raw_corrected_2_subsampled"});
+    analyse(filepaths);
     return 0;
 }
